@@ -1,34 +1,32 @@
-@defer (when dataLoaded){
-  <div class="container">
-    <div class="row my-3">
+@defer (when dataLoaded) {
+  <div class="container mt-5">
+    <div class="row my-3 mt-5">
       <div class="col-12 toolbar p-3">
-        <form (submit)="search($event)">
-          <div class="d-flex">
-            <h2>{{games.length}} Games
-              @if (favorites){
-                <fa-icon [icon]="faHeart" class="text-danger" (click)="favoriteList()"/>
-              } @else {
-                <fa-icon [icon]="faHeartBroken" class="text-danger" (click)="favoriteList()"/>
-              }
+        <div class="d-flex">
+          <h2>{{ gameList.length }} Games
+            @if (favorites) {
+              <fa-icon [icon]="faHeart" class="text-danger" (click)="favoriteList()"/>
+            } @else {
+              <fa-icon [icon]="faHeartBroken" class="text-danger" (click)="favoriteList()"/>
+            }
 
             <fa-icon class="ms-5" [icon]="faMagnifyingGlass"></fa-icon>
-            </h2>
-            <input type="search" class="ms-3 ps-5 form-control w-25"
-                   #searchInput (keyup)="search(searchInput.value)"
-                   placeholder="Search...">
-          </div>
-        </form>
+          </h2>
+          <input type="search" class="ms-3 ps-5 form-control w-25"
+                 #searchInput (keyup)="search(searchInput.value)"
+                 placeholder="Search...">
+        </div>
       </div>
     </div>
 
     <div class="row">
-      @for (game of gameList; track game.id){
+      @for (game of gameList; track game.id) {
         <div class="mt-2 col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card">
             <div class="card-header">
               <div class="card-title">
-                <h2>{{game.title}}
-                  @if (game.favorite){
+                <h2>{{ game.title }}
+                  @if (game.favorite) {
                     <fa-icon [icon]="faHeart"
                              class="text-danger" (click)="changeFavorite(game)"></fa-icon>
                   } @else {
@@ -37,22 +35,23 @@
                   }
                 </h2>
               </div>
-              <div class="card-subtitle">{{game.subtitle}}</div>
+              <div class="card-subtitle">{{ game.subtitle }}</div>
             </div>
             <img src="{{game.image}}" alt="" class="card-img-top">
             <div class="card-body">
-              <p class="card-text">{{game.description}}</p>
+              <p class="card-text">{{ game.description }}</p>
             </div>
             <div class="card-footer">
               <div class="d-flex justify-content-between">
                 <p class="text-muted">
-                  {{game.created_at | date: 'mediumDate'}}</p>
+                  {{ game.created_at | date: 'mediumDate' }}</p>
                 <div class="buttons d-flex">
                   <button class="btn btn-lg">
                     <fa-icon [icon]="faEdit" class="text-primary"
                              [routerLink]="'/games/edit/'+game.id"></fa-icon>
                   </button>
-                  <button class="btn btn-lg" data-bs-target="#deleteModal"
+                  <button class="btn btn-lg"
+                          [attr.data-bs-target]="'#deleteModal'+game.id"
                           data-bs-toggle="modal">
                     <fa-icon [icon]="faTrashCan"
                              class="text-danger"></fa-icon>
@@ -65,7 +64,7 @@
 
           <div class="modal fade" tabindex="-1"
                aria-labelledby="deleteModalLabel" aria-hidden="true"
-               id="deleteModal">
+               [attr.id]="'deleteModal'+game.id">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -78,14 +77,16 @@
                           data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                  Quieres borrar {{game.title}}?
+                  Quieres borrar {{ game.title }}?
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary"
-                          data-bs-dismiss="modal">Cancelar</button>
+                          data-bs-dismiss="modal">Cancelar
+                  </button>
                   <button type="button" class="btn btn-danger"
                           (click)="deleteGame(game)"
-                          data-bs-dismiss="modal">Borrar</button>
+                          data-bs-dismiss="modal">Borrar
+                  </button>
                 </div>
               </div>
             </div>
@@ -95,16 +96,18 @@
         </div>
       }
 
-      @if (toastShow){
+      @if (toastShow) {
         <ngb-toast class="toast-container position-fixed
-      bg-success text-light top-0 end-50 p-1" style="z-index: 1200"></ngb-toast>
+      bg-success text-light bottom-10 start-50 p-1" style="z-index: 1200"
+        >{{ toast.body }}
+        </ngb-toast>
       }
-     </div>
+    </div>
   </div>
 
-} @placeholder (){
-  <div class="d-flex justify-content-center">
-    <div class="spinner-border text-primary" role="status">
+} @placeholder () {
+  <div class="d-flex justify-content-center mt-5">
+    <div class="spinner-border text-primary mt-5" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
