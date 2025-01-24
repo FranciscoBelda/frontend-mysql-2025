@@ -29,7 +29,7 @@ export class GamesListComponent {
   games: Game[] = [];
   gameList: Game[] = [];
   toast = {
-    header: '',
+    color: 'bg-success',
     body: '',
     duration: 2000
   }
@@ -49,15 +49,19 @@ export class GamesListComponent {
         },
         complete: () => {
           this.dataLoaded = true;
-          this.showToast('Games loaded');
+          this.showToast('Games loaded','bg-success');
 
+        },
+        error: err => {
+          this.showToast(err.message,'bg-danger');
         }
       }
     )
   }
 
-  private showToast(message: string) {
+  private showToast(message: string, color: string) {
     this.toast.body = message;
+    this.toast.color = color;
     this.toastShow = true;
     setTimeout(() => {
       this.toastShow = false;
@@ -78,13 +82,13 @@ export class GamesListComponent {
       {
         next: value => {
           if (game.favorite){
-            this.showToast('Añadido a favoritos');
+            this.showToast('Añadido a favoritos','bg-success');
           }else {
-            this.showToast('Eliminado de favoritos');
+            this.showToast('Eliminado de favoritos','bg-success');
           }
           this.loadGames();
         },error: err => {
-          this.showToast(err.message);
+          this.showToast(err.message,'bg-danger');
         }
       }
     )
@@ -109,11 +113,11 @@ export class GamesListComponent {
       this.gameService.deleteGame(game.id).subscribe(
         {
           next: value => {
-            this.showToast(value.message);
+            this.showToast(value.message, 'bg-success');
             this.loadGames();
           },
           error: err => {
-            this.showToast(err.message);
+            this.showToast(err.message,'bg-danger');
           }
         }
       )

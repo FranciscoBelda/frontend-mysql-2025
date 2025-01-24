@@ -18,5 +18,5 @@ export interface Game {
   favorite: boolean
   description: string
   image: string
-  created_at: string
+  created_at?: string
 }

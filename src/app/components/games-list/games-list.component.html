@@ -98,7 +98,7 @@
 
       @if (toastShow) {
         <ngb-toast class="toast-container position-fixed
-      bg-success text-light bottom-10 start-50 p-1" style="z-index: 1200"
+      {{toast.color}} text-light bottom-10 start-50 p-1" style="z-index: 1200"
         >{{ toast.body }}
         </ngb-toast>
       }
